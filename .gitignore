@@ -42,6 +42,12 @@
 *.idb
 *.pdb
 
+/bin
+/obj
+
+*.cbp
+*.depend
+
 # Kernel Module Compile Results
 *.mod*
 *.cmd
