@@ -22,6 +22,24 @@ Node* treeMinimum(Node* root){
     return NULL;
 }
 
+Node* rot_esq(Node* desbal){
+    Node* filho = desbal->dir;
+    Node* neto = filho->esq;
+
+    filho->esq = desbal;
+    desbal->dir = neto;
+    return filho;
+}
+
+Node* rot_dir(Node* desbal){
+    Node* filho = desbal->esq;
+    Node* neto = filho->dir;
+
+    filho->dir = desbal;
+    desbal->esq = neto;
+    return filho;
+}
+
 Node* treeDelete(Node* root, int value){
     // O objetivo aqui é rodar a recursividade da função até achar um valor correspondente a 'value'
     if(root != NULL){

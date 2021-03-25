@@ -26,4 +26,8 @@ Node* treeDelete(Node* root, int value);
 
 Node* treeMinimum(Node* root);
 
+Node* rot_dir(Node* desbal);
+
+Node* rot_esq(Node* desbal);
+
 #endif
