@@ -111,14 +111,14 @@ Node* treeInsert(Node* root, int value){
     if (root == NULL){
         Node* node = nodeInit(value);
         return node;
-    } else {
+    }
         if(value > root->item)
             root->dir = treeInsert(root->dir, value);
         else if (value < root->item)
             root->esq = treeInsert(root->esq, value);
         else
             return root;
-    }
+
 
     //Balanceando
 
@@ -135,13 +135,16 @@ Node* treeInsert(Node* root, int value){
         return rot_esq(root);
 
     // LR
-    if (balance > 1 && value > root->esq->item)
-        return rot_esq_dir(root);
+    if (balance > 1 && value > root->esq->item){
+        root->esq =  rot_esq(root->esq);
+        return rot_dir(root);
+    }
 
-
-    // LR
-    if (balance < -1 && value < root->dir->item)
-        return rot_dir_esq(root);
+    // RL
+    if (balance < -1 && value < root->dir->item){
+        root->dir =  rot_dir(root->dir);
+        return rot_esq(root);
+    }
 
 
     return root;
