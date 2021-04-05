@@ -14,7 +14,8 @@ main(){
     root = treeInsert(root,25);
     root = treeInsert(root,50);
     root = treeInsert(root,25);
-    root = treeInsert(root,7);
+    root = treeInsert(root,22);
+    root = treeInsert(root,33);
 
     treePrint(root);
 

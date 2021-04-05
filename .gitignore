@@ -47,6 +47,7 @@
 
 *.cbp
 *.depend
+*.layout
 
 # Kernel Module Compile Results
 *.mod*
