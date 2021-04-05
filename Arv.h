@@ -8,6 +8,7 @@ struct node {
     int item;
     struct node* esq;
     struct node* dir;
+    int altura;
 };
 
 typedef struct node Node;
@@ -29,5 +30,15 @@ Node* treeMinimum(Node* root);
 Node* rot_dir(Node* desbal);
 
 Node* rot_esq(Node* desbal);
+
+Node* rot_esq_dir(Node* desbal);
+
+Node* rot_dir_esq(Node* desbal);
+
+int balancear(Node *n);
+
+int altura(Node *n);
+
+int maxValue(int a, int b);
 
 #endif

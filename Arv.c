@@ -8,6 +8,8 @@ Node* nodeInit(int value){
     node->esq = NULL;
     node->dir = NULL;
 
+    node->altura = 1;
+
     return node;
 }
 
@@ -28,6 +30,9 @@ Node* rot_esq(Node* desbal){
 
     filho->esq = desbal;
     desbal->dir = neto;
+
+    desbal->altura = maxValue(altura(desbal->esq),altura(desbal->dir)) + 1;
+    filho->altura = maxValue(altura(filho->esq),altura(filho->dir)) + 1;
     return filho;
 }
 
@@ -37,7 +42,36 @@ Node* rot_dir(Node* desbal){
 
     filho->dir = desbal;
     desbal->esq = neto;
+
+    desbal->altura = maxValue(altura(desbal->esq),altura(desbal->dir)) + 1;
+    filho->altura = maxValue(altura(filho->esq),altura(filho->dir)) + 1;
     return filho;
+}
+
+Node* rot_dir_esq(Node* desbal){
+    desbal->esq = rot_dir(desbal->esq);
+    return rot_esq(desbal);
+}
+
+Node* rot_esq_dir(Node* desbal){
+    desbal->dir = rot_esq(desbal->dir);
+    return rot_dir(desbal);
+}
+
+int maxValue(int a, int b){
+    return (a > b) ? a : b;
+}
+
+int altura(Node *n){
+    if (n == NULL)
+        return 0;
+    return n->altura;
+}
+
+int balancear(Node *n){
+    if (n == NULL)
+        return 0;
+    return altura(n->esq) - altura(n->dir);
 }
 
 Node* treeDelete(Node* root, int value){
@@ -82,7 +116,33 @@ Node* treeInsert(Node* root, int value){
             root->dir = treeInsert(root->dir, value);
         else if (value < root->item)
             root->esq = treeInsert(root->esq, value);
+        else
+            return root;
     }
+
+    //Balanceando
+
+    root->altura = 1 + maxValue(altura(root->esq),altura(root->dir));
+
+    int balance = balancear(root);
+
+    // LL
+    if (balance > 1 && value < root->esq->item)
+        return rot_dir(root);
+
+    // RR
+    if (balance < -1 && value > root->dir->item)
+        return rot_esq(root);
+
+    // LR
+    if (balance > 1 && value > root->esq->item)
+        return rot_esq_dir(root);
+
+
+    // LR
+    if (balance < -1 && value < root->dir->item)
+        return rot_dir_esq(root);
+
 
     return root;
     // As funções recursivas que estão dentro dos if's nunca acessarão este return.

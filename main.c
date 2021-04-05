@@ -6,18 +6,15 @@
 
 main(){
     Node* root = NULL;
+
+    root = treeInsert(root,10);
+    root = treeInsert(root,20);
+    root = treeInsert(root,30);
+    root = treeInsert(root,40);
+    root = treeInsert(root,25);
+    root = treeInsert(root,50);
+    root = treeInsert(root,25);
     root = treeInsert(root,7);
-    root = treeInsert(root,22);
-    root = treeInsert(root,66);
-    root = treeInsert(root,4);
-    root = treeInsert(root,3);
-    root = treeInsert(root,1);
-
-
-
-    treePrint(root);
-
-    root = treeDelete(root,7);
 
     treePrint(root);
 
