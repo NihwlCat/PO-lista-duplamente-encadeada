@@ -15,8 +15,6 @@ typedef struct node Node;
 
 void treePrint(Node* root);
 
-void treeFree(Node* root);
-
 Node* treeInsert(Node* root, int value);
 
 Node* nodeInit(int value);
@@ -40,5 +38,7 @@ int balancear(Node *n);
 int altura(Node *n);
 
 int maxValue(int a, int b);
+
+Node* balancearTree (Node* avl, Node* abb);
 
 #endif

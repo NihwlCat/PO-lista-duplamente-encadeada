@@ -74,37 +74,68 @@ int balancear(Node *n){
     return altura(n->esq) - altura(n->dir);
 }
 
-Node* treeDelete(Node* root, int value){
-    // O objetivo aqui é rodar a recursividade da função até achar um valor correspondente a 'value'
-    if(root != NULL){
-        if(root->item == value){
-            if(root->esq == NULL && root->dir == NULL){
-                // Caso a recursividade encontre uma folha
-                free(root);
-                return NULL;
-            } else if (root->esq == NULL && root->dir != NULL){
-                // Caso a recursividade encontre um nó com um filho
-                Node* aux = root->dir;
-                free(root);
-                return aux; // Retorna o valor de aux para root a direita.
-            } else if (root->esq != NULL && root->dir == NULL){
-                Node* aux = root->esq;
-                free(root);
-                return aux; // Retorna o valor de aux para root a esquerda.
-            } else {
-                Node* aux = treeMinimum(root->esq);
-                int item = aux->item;
-                root = treeDelete(root,item);
-                root->item = item;
-            }
+Node* treeInsertABB(Node* root, int value){
+    if (root == NULL){
+        Node* node = nodeInit(value);
+        return node;
+    } else {
+        if(value > root->item)
+            root->dir = treeInsert(root->dir, value);
+        else if (value < root->item)
+            root->esq = treeInsert(root->esq, value);
+    }
 
-        } else if (value > root->item)
+    return root;
+    // As funções recursivas que estão dentro dos if's nunca acessarão este return.
+    // Sendo assim, sempre que a root da chamada principal for diferente de nula, o método principal estará retornando root.
+}
+
+Node* treeDelete(Node* root, int value){
+    if(root == NULL)
+        return root;
+    if(value < root->item)
+        root->esq = treeDelete(root->esq, value);
+    else
+        if(value > root->item)
             root->dir = treeDelete(root->dir, value);
         else
-            root->esq = treeDelete(root->esq, value);
+        {
+            Node* aux = root;
+            if((root->esq) && (root->dir))
+            {
+                Node* parent = root->dir;
+                root = parent->esq;
+                if (root)
+                {
+                    while(root->esq)
+                    {
+                        parent = root;
+                        root = root->esq;
+                    }
+                    parent->esq = root->dir;
+                    root->dir = aux->dir;
+                }
+                else
+                    root = parent;
+                root->esq = aux->esq;
+            }
+            else
+                if(root->esq)
+                    root = root->esq;
+                else
+                    root = root->dir;
+            free(aux);
+        }
+    return root;
+}
 
-        return root;
+Node* balancearTree (Node* avl, Node* abb){
+    while(abb != NULL){
+        avl = treeInsert(avl,abb->item);
+        abb = treeDelete(abb,abb->item);
     }
+
+    return avl;
 }
 
 Node* treeInsert(Node* root, int value){
@@ -172,12 +203,5 @@ void treePrint(Node* root){
     }
 }
 
-void treeFree(Node* root){
-    if(root != NULL){
-        treeFree(root->esq);
-        treeFree(root->dir);
-        free(root);
-    }
-}
 
 
